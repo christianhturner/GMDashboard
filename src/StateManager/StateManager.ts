@@ -1,4 +1,37 @@
-// src/StateManager/StateManager.ts
+/**
+ * Creates a new state instance with associated actions and subscribers
+ * @template T The type of the state object
+ * @param config Configuration object for the state instance
+ * @returns State management API
+ * 
+ * @example
+ * ```typescript
+ * interface UserState {
+ *   name: string;
+ *   age: number;
+ * }
+ * 
+ * const userState = createState<UserState>({
+ *   namespace: 'user',
+ *   initialState: { name: '', age: 0 },
+ *   persistence: { enabled: true }
+ * });
+ * 
+ * // Create an action
+ * const updateName = userState.createAction<string>(
+ *   'UPDATE_NAME',
+ *   (state, payload) => ({ name: payload })
+ * );
+ * 
+ * // Subscribe to changes
+ * const unsubscribe = userState.subscribe(state => {
+ *   console.log('State updated:', state);
+ * });
+ * 
+ * // Dispatch action
+ * updateName.create('John');
+ * ```
+ */
 import { useEventBus } from '../EventBus';
 import { StateConfig, StateActions, Action, ActionCreator } from './types';
 
@@ -8,6 +41,12 @@ const globalActions = new Map<string, Map<string, Action<any, any>>>();
 export function createState<T extends object>(
     config: StateConfig<T>
 ): StateActions<T> {
+    if (!config.namespace) {
+        throw new Error('Namespace is required');
+    }
+    if (config.namespace.includes(':')) {
+        throw new Error('Namespace cannot include ":"')
+    }
     const {
         initialState,
         namespace,
