@@ -1,10 +1,20 @@
+import { useEventBus } from '../EventBus';
+import { StateConfig, StateActions, Action, ActionCreator, MiddlewareAPI } from './types';
+
+const globalStates = new Map<string, unknown>();
+const globalActions = new Map<string, Map<string, Action<any, any>>>();
+
 /**
- * Creates a new state instance with associated actions and subscribers
- * @template T The type of the state object
+ * Creates a new state instance with associated actions, subscribers, and middleware support
+ * 
+ * @template T The type of the state object. Must be an object type.
  * @param config Configuration object for the state instance
- * @returns State management API
+ * @returns A StateActions object containing methods to manage the state
+ * 
+ * @throws {Error} If namespace is missing or contains ":"
  * 
  * @example
+ * Basic Usage:
  * ```typescript
  * interface UserState {
  *   name: string;
@@ -16,27 +26,73 @@
  *   initialState: { name: '', age: 0 },
  *   persistence: { enabled: true }
  * });
+ * ```
  * 
- * // Create an action
+ * @example
+ * Using Actions:
+ * ```typescript
  * const updateName = userState.createAction<string>(
  *   'UPDATE_NAME',
  *   (state, payload) => ({ name: payload })
  * );
  * 
- * // Subscribe to changes
+ * updateName.create('John'); // Updates name to "John"
+ * ```
+ * 
+ * @example
+ * Using Middleware:
+ * ```typescript
+ * const loggerMiddleware: Middleware<UserState> = (api) => (next) => (action) => {
+ *   console.log('Before:', api.getState());
+ *   next(action);
+ *   console.log('After:', api.getState());
+ * };
+ * 
+ * const userState = createState<UserState>({
+ *   namespace: 'user',
+ *   initialState: { name: '', age: 0 },
+ *   middleware: [loggerMiddleware]
+ * });
+ * ```
+ * 
+ * @example
+ * Using Subscriptions:
+ * ```typescript
  * const unsubscribe = userState.subscribe(state => {
  *   console.log('State updated:', state);
  * });
  * 
- * // Dispatch action
- * updateName.create('John');
+ * // Later: cleanup subscription
+ * unsubscribe();
  * ```
+ * 
+ * @example
+ * Persistence Configuration:
+ * ```typescript
+ * const userState = createState<UserState>({
+ *   namespace: 'user',
+ *   initialState: { name: '', age: 0 },
+ *   persistence: {
+ *     enabled: true,
+ *     key: 'custom_storage_key', // optional
+ *     storage: sessionStorage    // optional, defaults to localStorage
+ *   }
+ * });
+ * ```
+ * 
+ * The returned StateActions object provides the following methods:
+ * - setState: Directly updates the state
+ * - getState: Retrieves the current state
+ * - subscribe: Subscribes to state changes
+ * - reset: Resets state to initial values
+ * - dispatch: Dispatches an action
+ * - createAction: Creates a new action creator
+ * 
+ * @see {@link StateConfig} for configuration options
+ * @see {@link StateActions} for available methods
+ * @see {@link Action} for action structure
+ * @see {@link Middleware} for middleware implementation
  */
-import { useEventBus } from '../EventBus';
-import { StateConfig, StateActions, Action, ActionCreator } from './types';
-
-const globalStates = new Map<string, unknown>();
-const globalActions = new Map<string, Map<string, Action<any, any>>>();
 
 export function createState<T extends object>(
     config: StateConfig<T>
@@ -45,12 +101,14 @@ export function createState<T extends object>(
         throw new Error('Namespace is required');
     }
     if (config.namespace.includes(':')) {
-        throw new Error('Namespace cannot include ":"')
+        throw new Error('Namespace cannot include ":"');
     }
+
     const {
         initialState,
         namespace,
-        persistence = { enabled: false }
+        persistence = { enabled: false },
+        middleware = []
     } = config;
 
     const storageKey = persistence.key || `state_${namespace}`;
@@ -89,7 +147,6 @@ export function createState<T extends object>(
         };
         globalStates.set(namespace, updatedState);
 
-        // Persist state if enabled
         if (persistence.enabled) {
             try {
                 storage.setItem(storageKey, JSON.stringify(updatedState));
@@ -113,11 +170,24 @@ export function createState<T extends object>(
         setState(initialState);
     };
 
-    const dispatch = <P>(action: Action<T, P>): void => {
+    // Create middleware API
+    const middlewareAPI: MiddlewareAPI<T> = {
+        getState,
+        dispatch: (action: Action<T, any>) => composedDispatch(action)
+    };
+
+    // Base dispatch function
+    const baseDispatch = <P>(action: Action<T, P>): void => {
         const currentState = getState();
         const newState = action.reducer(currentState, action.payload as P);
         setState(newState);
     };
+
+    // Compose middleware
+    const composedDispatch = middleware.reduce(
+        (next, middleware) => middleware(middlewareAPI)(next),
+        baseDispatch
+    );
 
     const createAction = <P>(
         type: string,
@@ -135,8 +205,9 @@ export function createState<T extends object>(
         return {
             type: actionType,
             create: (payload: P) => {
-                dispatch({ ...action, payload });
-            }
+                composedDispatch({ ...action, payload });
+            },
+            reducer
         };
     };
 
@@ -145,7 +216,7 @@ export function createState<T extends object>(
         getState,
         subscribe,
         reset,
-        dispatch,
+        dispatch: composedDispatch,
         createAction
     };
 }

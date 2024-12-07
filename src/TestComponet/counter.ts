@@ -1,26 +1,11 @@
-import { counterState } from "../states/counterState";
+// counter.ts
+
+import { incrementCounter } from "../states/counterState";
 
 export function setupCounter(element: HTMLButtonElement) {
-    // Subscribe to state changes
-    const unsubscribe = counterState.subscribe((state) => {
-        element.innerHTML = `count is ${state.count} (Last updated: ${state.lastUpdated.toLocaleTimeString()})`;
-    });
+    element.innerHTML = `Count`;
 
-    // Add click handler
     element.addEventListener('click', () => {
-        const currentState = counterState.getState();
-        counterState.setState({
-            count: currentState.count + 1,
-            lastUpdated: new Date()
-        });
+        incrementCounter.create();
     });
-
-    // Initial render
-    const initialState = counterState.getState();
-    element.innerHTML = `count is ${initialState.count}`;
-
-    // Return cleanup function
-    return () => {
-        unsubscribe();
-    };
 }
