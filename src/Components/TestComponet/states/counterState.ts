@@ -1,6 +1,5 @@
-// src/states/counterState.ts
-import { createState } from "../StateManager/StateManager";
-import { Middleware } from "../StateManager/types";
+import { createState } from "../../../Services/StateManager/StateManager";
+import { Middleware } from "../../../Services/StateManager/types";
 
 const loggerMiddleware: Middleware<any> = (api) => (next) => (action) => {
     console.group(action.type);

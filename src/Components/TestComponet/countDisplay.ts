@@ -1,6 +1,4 @@
-// counterDisplay.ts
-
-import { counterState } from "../states/counterState";
+import { counterState } from "./states/counterState";
 
 export function setupCounterDisplay(element: HTMLElement) {
     const unsubscribe = counterState.subscribe((state) => {
