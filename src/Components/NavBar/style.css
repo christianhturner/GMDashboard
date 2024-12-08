@@ -1,0 +1,54 @@
+
+.navbar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  background-color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.navbar:hover {
+  width: 200px; 
+}
+
+.nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  color: white;
+  cursor: pointer;
+}
+
+.nav-item .icon {
+  margin: 0 10px;
+  font-size: 1.5em;
+}
+
+.nav-item .toggle {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.nav-item .label {
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: none; 
+}
+
+.navbar:hover .label {
+  display: inline; 
+}
+
+.nav-item:hover {
+  background-color: #575757;
+}
