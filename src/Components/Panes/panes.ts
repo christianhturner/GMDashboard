@@ -35,6 +35,7 @@ export class Pane {
             const optionsBar = document.createElement('div');
             optionsBar.className = 'gm-screen-panel-options-bar';
             optionsBar.textContent = this.options.title;
+            pane.appendChild(optionsBar)
         }
 
         const contentContainer = document.createElement('div');
