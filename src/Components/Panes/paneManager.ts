@@ -1,9 +1,11 @@
 import { Pane, PaneOptions } from "./panes";
+import "./style.css";
 
 export interface PaneTab extends Object {
     id: string;
     panes: Pane[]
     maxPanes: number;
+    domElement: HTMLDivElement
 }
 
 export class PaneManager {
@@ -36,7 +38,10 @@ export class PaneManager {
         if (checkForTab) {
             throw new Error(`Tab with name ${id} already exist, please select a unique name`);
         }
-        this.paneTabs.push({ id: id, panes: [], maxPanes: 8 }) // make maxPanes changeable
+        const domElement = document.createElement('div');
+        domElement.setAttribute('class', 'pane-tab')
+        domElement.setAttribute('id', `pane-tab-${id}`)
+        this.paneTabs.push({ id: id, panes: [], domElement, maxPanes: 8 }) // make maxPanes changeable
     }
 
 
@@ -56,8 +61,13 @@ export class PaneManager {
         const targetTab = this.paneTabs.find(paneTab => paneTab.id === id);
         if (this.domElement) {
             targetTab?.panes.forEach((pane) => {
-                this.domElement!.appendChild(pane.getElement());
+                targetTab.domElement.appendChild(pane.getElement())
             })
+            if (targetTab?.domElement) {
+                this.domElement.appendChild(targetTab?.domElement);
+            } else {
+                throw new Error('Tab doesn\'t have assigned Dom element');
+            }
         }
         throw new Error('You must first initialize the Pane Manager before rendering tabs')
     }

@@ -24,7 +24,7 @@ export class Pane {
 
     private createPaneElement(): HTMLElement {
         const pane = document.createElement('div')
-        pane.className = 'gm-screen-panel-options-bar';
+        pane.className = 'gm-screen-pane';
         pane.id = this.options.id;
 
         // This will become the pane manager bar and will give users the options to close the pane,
