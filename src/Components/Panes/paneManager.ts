@@ -1,5 +1,6 @@
 import { Pane, PaneOptions } from "./panes";
 import "./style.css";
+import { evenlyDivideGridColumnsAndRows } from "./utilities";
 
 export interface PaneTab extends Object {
     id: string;
@@ -41,7 +42,11 @@ export class PaneManager {
         const domElement = document.createElement('div');
         domElement.setAttribute('class', 'pane-tab')
         domElement.setAttribute('id', `pane-tab-${id}`)
-        this.paneTabs.push({ id: id, panes: [], domElement, maxPanes: 8 }) // make maxPanes changeable
+        this.paneTabs.push({ id: id, panes: [], domElement, maxPanes: 7 }) // make maxPanes changeable
+    }
+
+    public getPaneTab(id: string): PaneTab | undefined {
+        return this.paneTabs.find(paneTab => paneTab.id === id)
     }
 
 
@@ -51,7 +56,9 @@ export class PaneManager {
             throw new Error(`Target Tab doesn't exist: ${tabId}`)
         }
         if (targetTab.panes.length >= targetTab.maxPanes) {
-            throw new Error(`Too many panes Need to actually handle this, but works for now`)
+            console.error('Too many panes to handle with current implementation')
+            return
+            // throw new Error(`Too many panes Need to actually handle this, but works for now`)
         }
         const pane = new Pane({ ...paneOptions });
         targetTab.panes.push(pane);
@@ -65,6 +72,7 @@ export class PaneManager {
             })
             if (targetTab?.domElement) {
                 this.domElement.appendChild(targetTab?.domElement);
+                evenlyDivideGridColumnsAndRows(`pane-tab-${targetTab.id}`, targetTab.maxPanes)
             } else {
                 throw new Error('Tab doesn\'t have assigned Dom element');
             }

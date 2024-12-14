@@ -30,7 +30,8 @@ td {
 }
 
 .pane-tab {
-    display: flex;
+    display: grid;
+    height: 100vh;
 }
 
 .gm-screen-pane {
