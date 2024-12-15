@@ -55,6 +55,10 @@ export class Pane {
         return pane;
     }
 
+    public getId(): string {
+        return this.options.id;
+    }
+
     public getElement(): HTMLElement {
         return this.element;
     }

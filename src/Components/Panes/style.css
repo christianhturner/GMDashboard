@@ -31,7 +31,7 @@ td {
 
 .pane-tab {
     display: grid;
-    height: 100vh;
+    height: calc(100vh - 30px);
 }
 
 .gm-screen-pane {
@@ -40,4 +40,10 @@ td {
     padding: 10px;
     border: 1px solid black;
     margin: 5px;
+}
+
+#pane-manager-control-banner {
+    border: 1px solid white;
+    margin: 5px 5px -4px 5px;
+    height: 20px;
 }

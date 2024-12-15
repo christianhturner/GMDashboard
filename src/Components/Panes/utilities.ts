@@ -1,7 +1,32 @@
+export function destoryElement(elementId: string): void {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.remove()
+    } else {
+        console.error(`Cannot find element with id: ${elementId}`);
+    }
+}
+
+export function destoryElements(elementIds: string[]): void {
+    const elementsNotFound: string[] = [];
+    elementIds.forEach((elId) => {
+        const element = document.getElementById(elId);
+        if (element) {
+            return element.remove()
+        } else {
+            elementsNotFound.push(elId)
+        }
+    })
+    if (elementsNotFound) {
+        console.warn(`The following elements: ${elementsNotFound}, could not be found by ID`)
+    }
+
+}
+
 export function evenlyDivideGridColumnsAndRows(id: string, maxPanes: number) {
     const domElement = document.getElementById(id);
     if (!domElement) {
-        throw new Error(`Dom Element ${id}, does not exist. Did you forget the preceeding '#'`)
+        throw new Error(`Dom Element ${id}, does not exist.Did you forget the preceeding '#'`)
     }
     const columnsPerRow = Math.ceil(maxPanes / 2);
 
@@ -19,7 +44,7 @@ export function evenlyDivideGridColumnsAndRows(id: string, maxPanes: number) {
             if (lastCellId) {
                 const lastCellElement = document.getElementById(lastCellId);
                 lastCellElement!.style.gridRow = '1 / span 2';
-                lastCellElement!.style.gridColumn = `${columnsPerRow}`;
+                lastCellElement!.style.gridColumn = `${columnsPerRow} `;
             }
             throw new Error(`Last element of ${domElement} has no id can't continue`)
         }

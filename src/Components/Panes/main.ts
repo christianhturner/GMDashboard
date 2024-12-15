@@ -194,17 +194,53 @@ const secondPane: PaneOptions = {
     title: "Second Pane"
 }
 
+const thirdPane: PaneOptions = {
+    id: 'ThridPane',
+    content: paneContent,
+    title: "Third pane"
+};
+
+const fourthPane: PaneOptions = {
+    id: 'FourthPane',
+    content: paneContentTwo,
+    title: "Fourth Pane"
+}
+
+
+const fifthPane: PaneOptions = {
+    id: 'FifthPane',
+    content: paneContent,
+    title: "Fifth pane"
+};
+
+const sixthPane: PaneOptions = {
+    id: 'SixthPane',
+    content: paneContentTwo,
+    title: "Sixth Pane"
+}
+const seventhPane: PaneOptions = {
+    id: 'SeventhPane',
+    content: paneContent,
+    title: "Seventh pane"
+};
+
+const eigthPane: PaneOptions = {
+    id: 'EigthPane',
+    content: paneContentTwo,
+    title: "Eight Pane"
+}
+
 const paneManager = PaneManager.instance;
 paneManager.initialize('#gm-pane-container');
 paneManager.createTab('First Tab');
 paneManager.createPane(firstPane, 'First Tab')
 paneManager.createPane(secondPane, 'First Tab')
-paneManager.createPane(firstPane, 'First Tab')
-paneManager.createPane(secondPane, 'First Tab')
-paneManager.createPane(firstPane, 'First Tab')
-paneManager.createPane(firstPane, 'First Tab')
-paneManager.createPane(firstPane, 'First Tab')
-paneManager.createPane(firstPane, 'First Tab')
+paneManager.createPane(thirdPane, 'First Tab')
+paneManager.createPane(fourthPane, 'First Tab')
+paneManager.createPane(fifthPane, 'First Tab')
+paneManager.createPane(sixthPane, 'First Tab')
+paneManager.createPane(seventhPane, 'First Tab')
+paneManager.createPane(eigthPane, 'First Tab')
 paneManager.renderTab('First Tab')
 
 // injectPanels(gmPaneContainer, firstPane);
