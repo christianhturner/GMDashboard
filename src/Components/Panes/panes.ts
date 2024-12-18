@@ -5,12 +5,8 @@ export interface PaneOptions {
     id: string;
     title?: string;
     content: HTMLElement | string;
-    width?: number | string;
-    height?: number | string;
-    position?: {
-        column?: number;
-        row?: number;
-    }
+    colspan?: number;
+    rowspan?: number;
 }
 
 export class Pane {

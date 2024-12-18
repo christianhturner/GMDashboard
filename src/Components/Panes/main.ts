@@ -1,4 +1,4 @@
-import { PaneManager } from "./paneManager";
+import { PanelLayout, PaneManager } from "./paneManager";
 import { Pane, PaneOptions } from "./panes";
 
 const paneContent = `
@@ -230,18 +230,49 @@ const eigthPane: PaneOptions = {
     title: "Eight Pane"
 }
 
-const paneManager = PaneManager.instance;
-paneManager.initialize('#gm-pane-container');
-paneManager.createTab('First Tab');
-paneManager.createPane(firstPane, 'First Tab')
-paneManager.createPane(secondPane, 'First Tab')
-paneManager.createPane(thirdPane, 'First Tab')
-paneManager.createPane(fourthPane, 'First Tab')
-paneManager.createPane(fifthPane, 'First Tab')
-paneManager.createPane(sixthPane, 'First Tab')
-paneManager.createPane(seventhPane, 'First Tab')
-paneManager.createPane(eigthPane, 'First Tab')
-paneManager.renderTab('First Tab')
+const layout = new PanelLayout('gm-pane-container');
+
+layout.createTab('tab1', 'Tab 1');
+layout.createTab('tab2', 'Tab 2');
+
+layout.createPanelGrid('tab1', 6, [
+    { id: 'panel1', content: paneContent },
+    { id: 'panel2', content: paneContentTwo },
+    { id: 'panel3', content: paneContent },
+    { id: 'panel4', content: paneContentTwo },
+    { id: 'panel5', content: paneContent },
+    { id: 'panel6', content: paneContentTwo },
+])
+
+
+layout.createPanelGrid('tab2', 8, [
+    { id: 'panel7', content: paneContentTwo },
+    { id: 'panel8', content: paneContent },
+    { id: 'panel9', content: paneContentTwo },
+    { id: 'panel10', content: paneContent },
+    { id: 'panel11', content: paneContentTwo },
+    { id: 'panel12', content: paneContent },
+    { id: 'panel13', content: paneContentTwo },
+    { id: 'panel14', content: paneContent },
+])
+
+// Initialize on a tab, this should be saved and remember between loads,
+// changing models, etc.
+layout.switchTab('tab1')
+
+console.log(layout)
+// const paneManager = PaneManager.instance;
+// paneManager.initialize('#gm-pane-container');
+// paneManager.createTab('First Tab');
+// paneManager.createPane(firstPane, 'First Tab')
+// paneManager.createPane(secondPane, 'First Tab')
+// paneManager.createPane(thirdPane, 'First Tab')
+// paneManager.createPane(fourthPane, 'First Tab')
+// paneManager.createPane(fifthPane, 'First Tab')
+// paneManager.createPane(sixthPane, 'First Tab')
+// paneManager.createPane(seventhPane, 'First Tab')
+// paneManager.createPane(eigthPane, 'First Tab')
+// paneManager.renderTab('First Tab')
 
 // injectPanels(gmPaneContainer, firstPane);
 

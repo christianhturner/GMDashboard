@@ -47,3 +47,28 @@ td {
     margin: 5px 5px -4px 5px;
     height: 20px;
 }
+
+.gm-panel-tab-container {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #f0f0f0;
+}
+
+.gm-panel-tab {
+    padding: 8px 16px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.tab:hover {
+    background: #eee;
+}
+
+.panel {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 16px;
+    overflow: auto;
+}
