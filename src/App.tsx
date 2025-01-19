@@ -15,7 +15,7 @@ function App() {
 
     useAppSettingsSubscribe(setAppSettings)
 
-    const handleButtonClick: React.MouseEventHandler<HTMLButtonElement> | undefined = (event) => {
+    const handleButtonIncrementClick: React.MouseEventHandler<HTMLButtonElement> | undefined = (event) => {
         console.log(event);
         if (!appSettings.count) {
             updateAppSettings({ count: 1 })
@@ -24,6 +24,15 @@ function App() {
         const newValue = appSettings.count + 1;
         updateAppSettings({ count: newValue })
 
+    }
+    const handleButtonDecrementClick: React.MouseEventHandler<HTMLButtonElement> | undefined = (event) => {
+        console.log(event);
+        if (!appSettings.count) {
+            console.warn("Button doesn't decrement below 0")
+            return
+        }
+        const newValue = appSettings.count - 1;
+        updateAppSettings({ count: newValue })
     }
 
     return (
@@ -38,11 +47,14 @@ function App() {
             </div>
             <h1>Vite + React</h1>
             <div className="card">
-                <button onClick={(event) => handleButtonClick(event)}>
-                    count is {appSettings.count}
+                <button onClick={(event) => handleButtonIncrementClick(event)}>
+                    Increase Count
+                </button>
+                <button onClick={(event) => handleButtonDecrementClick(event)}>
+                    Decrease Count
                 </button>
                 <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
+                    Your count value is {appSettings.count}
                 </p>
             </div >
             <p className="read-the-docs">
