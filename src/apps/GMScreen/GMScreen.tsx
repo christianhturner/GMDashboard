@@ -1,4 +1,12 @@
 export const GMScreen = (): JSX.Element => {
 
-    return <></>
+    return (
+        <>
+            <div>
+                <h1>
+                    Hello World
+                </h1>
+            </div>
+        </>
+    )
 }
