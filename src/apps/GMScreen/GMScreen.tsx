@@ -1,12 +1,10 @@
+import { Button } from "../../BaseComponents/Button/Button"
+
 export const GMScreen = (): JSX.Element => {
 
     return (
         <>
-            <div>
-                <h1>
-                    Hello World
-                </h1>
-            </div>
+            <Button>Hello</Button>
         </>
     )
 }

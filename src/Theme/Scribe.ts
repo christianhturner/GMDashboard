@@ -1,12 +1,31 @@
 import { DefaultTheme } from "styled-components/dist/types";
 
 const Scribe: DefaultTheme = {
-    borderRadius: '5px',
-
     colors: {
-        main: '#522e2e',
-        secondary: '#cbc18f',
-    }
+        main: "",
+        secondary: "",
+        background: "",
+        text: "",
+        border: ""
+    },
+    borderRadius: "",
+    spacing: {
+        small: "",
+        medium: "",
+        large: ""
+    },
+    typogrophy: {
+        fontsize: {
+            small: "",
+            medium: "",
+            large: ""
+        },
+        fontWeight: {
+            regular: 0,
+            bold: 0
+        }
+    },
+    name: "scribe"
 }
 
 export { Scribe };
