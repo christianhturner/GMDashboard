@@ -40,7 +40,7 @@ import 'styled-components';
  * dynamic theme switching
  */
 declare module 'styled-components' {
-    interface ColoraPalette {
+    interface ColorPalette {
         main: string;
         secondary: string;
         background: string;
@@ -56,6 +56,9 @@ declare module 'styled-components' {
             large: string;
         };
         typogrophy: {
+            headerFont: string;
+            bodyFont: string;
+            uniqueFont: string;
             fontsize: {
                 small: string;
                 medium: string;
@@ -70,7 +73,7 @@ declare module 'styled-components' {
 
 
     export interface DefaultTheme extends BaseStyles {
-        colors: ColoraPalette;
+        colors: ColorPalette;
         name: string
     }
 }

@@ -1,0 +1,30 @@
+{
+    "colors": {
+        "main": "#522e2c",
+        "secondary": "#ebcba2",
+        "background": "",
+        "text": "",
+        "border": ""
+    },
+    "borderRadius": "",
+    "spacing": {
+        "small": "",
+        "medium": "",
+        "large": ""
+    },
+    "typogrophy": {
+        "headerFont": "",
+        "bodyFont": "",
+        "uniqueFont": "",
+        "fontsize": {
+            "small": "",
+            "medium": "",
+            "large": ""
+        },
+        "fontWeight": {
+            "regular": 0,
+            "bold": 0
+        }
+    },
+    "name": "scribe"
+}
