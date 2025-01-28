@@ -1,0 +1,24 @@
+import styled from "styled-components";
+
+export const SVG = styled.svg``;
+export const Circle = styled.circle``;
+export const ClipPath = styled.clipPath``;
+export const Defs = styled.defs``;
+export const Ellipse = styled.ellipse``;
+export const ForeignObject = styled.foreignObject``;
+export const G = styled.g``;
+export const Image = styled.image``;
+export const Line = styled.line``;
+export const LinearGradient = styled.linearGradient``;
+export const Marker = styled.marker``;
+export const Mask = styled.mask``;
+export const Path = styled.path``;
+export const Pattern = styled.pattern``;
+export const Polygon = styled.polygon``;
+export const Polyline = styled.polyline``;
+export const RadialGradient = styled.radialGradient``;
+export const Rect = styled.rect``;
+export const Stop = styled.stop``;
+export const Text = styled.text``;
+export const TSpan = styled.tspan``;
+export const Use = styled.use``;
