@@ -1,8 +1,8 @@
-import React, { Dispatch, useEffect } from "react";
+import React, { Dispatch, useEffect, useMemo } from "react";
 import { useEventBus } from "../../services/EventBus";
 import { AppSettings, AppSettingsEventService } from "./AppSettings";
 
-type AppSettingsUpdate = (handler: (update: Partial<AppSettings>) => void) => () => void;
+type SubscriptionBuilder<T> = (handler: (update: T) => void) => () => void;
 
 
 interface AppSettingsEventsInterface {
@@ -13,25 +13,29 @@ interface AppSettingsEventsInterface {
 export const useAppSettingsEvents = (): AppSettingsEventsInterface => {
     const eventBus = useEventBus<AppSettingsEventService>();
 
-    const onAppSettingsUpdate: AppSettingsUpdate = (handler) => eventBus.subscribe('appSettings:update', handler);
+    const onAppSettingsUpdate: SubscriptionBuilder<Partial<AppSettings>> = React.useCallback(
+        handler => eventBus.subscribe('appSettings:update', handler), [eventBus]);
 
-    const useAppSettingsSubscribe = (setState: Dispatch<React.SetStateAction<AppSettings>>): void => {
-        useEffect(() => {
-            const unsubscribe = onAppSettingsUpdate((update) => {
-                setState((prevState) => ({
-                    ...prevState,
-                    ...update
-                }));
-            });
-            return () => {
-                unsubscribe();
-            }
-        }, [setState])
-    }
+    return useMemo(() => {
 
+        const useAppSettingsSubscribe = (setState: Dispatch<React.SetStateAction<AppSettings>>): void => {
+            useEffect(() => {
+                const unsubscribe = onAppSettingsUpdate((update) => {
+                    setState((prevState) => ({
+                        ...prevState,
+                        ...update
+                    }));
+                });
+                return () => {
+                    unsubscribe();
+                }
+            }, [setState])
+        }
 
-    return {
-        updateAppSettings: (update) => eventBus.publish('appSettings:update', update),
-        useAppSettingsSubscribe,
-    }
+        return {
+            updateAppSettings: (update) => eventBus.publish('appSettings:update', update),
+            useAppSettingsSubscribe,
+        }
+
+    }, [eventBus, onAppSettingsUpdate])
 }
